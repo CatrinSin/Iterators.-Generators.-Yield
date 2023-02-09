@@ -4,22 +4,22 @@ class FlatIterator:
   self.list_of_list = list_of_list
 
  def __iter__(self):
-  self.list = iter(self.list_of_list)
-  self.next_list = next(self.list)
-  self.list_of_iter = iter(self.next_list)
-  # self.next_list = next(self.list_of_iter)
-  self.flat_list = []
+  self.list_of_iter = iter(self.list_of_list)
+  self.next_list = iter(next(self.list_of_iter))
   return self
 
- def __next__(self):
-  if self.next_list is None:
-   raise StopIteration
-  else:
-   # self.next_list = next(self.list)
-   # self.list_of_iter = iter(self.next_list)
-   item = next(self.list_of_iter)
 
-  return item
+ def __next__(self):
+  try:
+   next_item = next(self.next_list)
+  # пробуем получить следующий элемент
+
+  except StopIteration:
+   #  если элементы в текущем списке закончились, то выбросится StopIteration
+   # значит нам нужно извлечь следующий список из self.list_of_iter и положить в self.next_list
+   # получаем слеюущий элемент из нового self.next_list
+   return next_item
+
 
 fr = FlatIterator([
  ['a', 'b', 'c'],
